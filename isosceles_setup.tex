@@ -587,7 +587,34 @@ Introduce a Lagrange multiplier $\Lambda$
     \mathcal L = \sum_\ell h_\ell^3 - \Lambda(\mathbf h^\top G^{-1}\mathbf h - 1).
 \end{equation}
 Stationarity gives us:
-\begin
+\begin{equation}
+3\mathbf h^{\circ 2} = 2\Lambda G^{-1}\mathbf h.
+\end{equation}
+(using $\circ$ as elementwise powers!)
+Dotting with $\mathbf h$ yields
+\begin{equation}
+    3H = 2\Lambda
+\end{equation}
+so the stationary equation is
+\begin{equation}
+    G\mathbf h^{\circ 2} = H\mathbf h
+\end{equation}
+Expanding the equation yields the system
+\begin{align}
+    h_1^2 + (\omega + 2\delta)h_2^2 + (\omega - \delta)h_3^2 &= H h_1 \\
+    (\omega + 2\delta)h_1^2 + h_2^2 + (\omega - \delta)h_3^2 &= H h_2 \\
+    (\omega - \delta)(h_1^2 + h_2^2) + h_3^2 &= H h_3
+\end{align}
+Subtracting the first two equations gives
+\begin{equation}
+    (h_1 - h_2)\left[ (1 - \omega - 2\delta)(h_1 + h_2) - H\right] = 0.
+\end{equation}
+This separates the stationary points into two families
+\begin{enumerate}
+    \item those preserving $1 \leftrightarrow 2$, with $h_1 = h_2$
+    \item and those distinguishing the two teachers
+\end{enumerate}
+
 
 
 \end{document}
