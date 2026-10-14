@@ -1,4 +1,3 @@
-\documentclass[11pt, reqno]{amsart}
 
 %%% Font Setup
 % \usepackage{ETbb}
@@ -578,6 +577,7 @@ Write $E = (\mathbf e_1, \mathbf e_2, \mathbf e_3)$. Since $\mathbf u$ lies in t
 \end{equation}
 Therefore $\|\mathbf u\|^2 = \mathbf h^\top G^{-1}\mathbf h$ and our optimization becomes
 \begin{equation}
+\label{eq:opt}
     \max_{\mathbf h} h_1^3 +h_2^3 + h_3^3 \text{ subject to } \mathbf h^\top G^{-1}\mathbf h = 1.
 \end{equation}
 The objective now has a fixed form, changing the teacher geometry changes the constraint ellipsoid.
@@ -597,6 +597,7 @@ Dotting with $\mathbf h$ yields
 \end{equation}
 so the stationary equation is
 \begin{equation}
+\label{eq:stat}
     G\mathbf h^{\circ 2} = H\mathbf h
 \end{equation}
 Expanding the equation yields the system
@@ -614,6 +615,80 @@ This separates the stationary points into two families
     \item those preserving $1 \leftrightarrow 2$, with $h_1 = h_2$
     \item and those distinguishing the two teachers
 \end{enumerate}
+We now need to compare the scores of the stationary branches. For a small deformation, we can do that by continuing Jeremy's known equilateral solutions. This will give us the shared direction's response, the splitting of the three tilted solutions, and the shifted transition.
+
+We work near Jeremy's coexistence point
+\begin{equation}
+    \omega_0 = 2^{1/3} - 1,
+\end{equation}
+with sufficiently small $\delta$.
+
+At $\delta = 0$, the shared solution has overlaps
+\begin{equation}
+    \mathbf h_{\text{sh}}^{(0)} = c\begin{pmatrix}
+        1 \\ 1 \\ 1
+    \end{pmatrix},\quad c^2 = \frac{1 + 2\omega}{3},
+\end{equation}
+and score $H_{\text{sh}}^{(0)} = 3c^3$. The three symmetry-related tilted maxima have overlaps
+\begin{equation}
+    \mathbf h^{[1]} = \begin{pmatrix}
+        x \\ y \\ y
+    \end{pmatrix},\quad \mathbf h^{[2]} = \begin{pmatrix}
+        y \\ x \\ y
+    \end{pmatrix},\quad \mathbf h^{[3]} = \begin{pmatrix}
+        y \\ y \\ x
+    \end{pmatrix},
+\end{equation}
+with $x > y > 0$. The bracketed label identifies which teacher the direction emphasizes. Their common score is $H_{\text{tilt}}^{(0)} = x^3 + 2y^3$. This factorization tells us how these branches organize after deformation. The shared branch and the teacher-$3$ branch preserve $h_1 = h_2$. The other two branches distinguish teachers $1, 2$ and remain related by their exchange. 
+
+To figure out which branch wins, we calculate how their stationary scores change with $\delta$. Recall the condition in Eq \eqref{eq:opt} and the established Eq \eqref{eq:stat}. Equivalently, 
+\begin{equation}
+\label{eq:stat-inv}
+    \mathbf h^{\circ 2} = HG^{-1} \mathbf h.
+\end{equation}
+Define $\xi$ to be a parameter such as $\delta$ or $\omega$. Both $G$ and the stationary point $\mathbf h$ depend on $\xi$. Write a prime for differentiation along that stationary branch. First, differentiate the normalization. Using
+\begin{equation}
+    (G^{-1})' = -G^{-1}G'G^{-1},
+\end{equation}
+we obtain
+\begin{equation}
+    0 = 2(G^{-1}\mathbf h)^\top \mathbf h' - (G^{-1}\mathbf h)^\top G'(G^{-1}\mathbf h) \implies (G^{-1}\mathbf h)^\top \mathbf h' = \frac 12 (G^{-1}\mathbf h)^\top G'(G^{-1}\mathbf h) 
+\end{equation}
+And differentiating $H = \sum_\ell h_\ell^3$ gives
+\begin{equation}
+    H' = 3(\mathbf h^{\circ 2})^\top \mathbf h' = 3H(G^{-1}\mathbf h)^\top \mathbf h',
+\end{equation}
+by Eq \eqref{eq:stat-inv}, we find
+\begin{equation}
+\label{eq:dH}
+    H' = \frac{3}{2H}(\mathbf h^{\circ 2})^\top G' \mathbf h^{\circ 2}.
+\end{equation}
+Usefully, we don't need $\mathbf h'$ to calculate the first order change in the optimized score. We only need the original stationarity overlaps and the change in geometry. For our deformation, hold $\omega$ fixed:
+\begin{equation}
+    \frac{\partial G}{\partial \delta} = \begin{pmatrix}
+        0 & 2 & -1 \\ 2 & 0 & -1 \\ -1 & -1 & 0
+    \end{pmatrix} =: D.
+\end{equation}
+Let us evaluate Eq \eqref{eq:dH} at $\mathbf h = c\bm 1$:
+\begin{equation}
+\label{eq:Hsh}
+    \frac{\partial H_{\text{sh}}}{\partial \delta}\Bigg|_0 = \frac{3c^4}{2H_{\text{sh}}^{0}}\underbrace{\bm1^\top D\bm 1}_{=0} \implies H_{\text{sh}}(\omega, \delta) = 3c^3 + O(\delta^2).
+\end{equation}
+The score has no linear correction. This doesn't mean its direction stays fixed. To find the direction's response, write $\mathbf h_{\text{sh}} = c\bm1 + \delta \mathbf z + O(\delta^2)$. Expanding the score, 
+\begin{equation}
+    H_{\text{sh}} = \sum_{\ell=1}^3 (c + \delta z_\ell)^3 = 3c^3 + 3c^2 \delta\sum_\ell z_\ell + O(\delta^2).
+\end{equation}
+This implies that $\sum_\ell z_\ell = 0$, as per Eq.  \eqref{eq:Hsh}
+Now, expand the stationary equation. Let
+\begin{equation}
+    G_0 = (1 - \omega)I + \omega \bm1 \bm1^\top,\quad G = G_0 + \delta D.
+\end{equation}
+The LHS is
+\begin{align}
+    G\mathbf h^{\circ 2} &= (G_0 + \delta D)(c^2 \bm1 + 2c\delta \mathbf z) + O(\delta^2) \\
+    & = c^2 G_0 \bm 1 + \delta(2cG_0 \mathbf z + c^2 D\bm 1) + O(\delta^2).
+\end{align}
+
 
 
 

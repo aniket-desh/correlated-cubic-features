@@ -546,6 +546,145 @@ The same proof also allows unequal feature strengths: replacing each summand in 
 The degree-one component vanishes exactly when this weighted sum of directions is zero.
 Although the target consists of cubic Hermite features in the Gaussian input, its overlap with a candidate committee generally contains both degree-one and degree-three spherical harmonics as a function of the committee direction.
 
+\section{$k$ Features}
+
+It turns out that generalizing the solution to $k$ features is not terribly difficult!
+It will turn out that, for $k$ features, having some kind of symmetries in the problem will be important for deriving exact solutions.
+However, when we reformulate into a certain kind of generalization of an eigenvalue problem called a $Z$-eigenvalue problem, it will become clearer how to attack even the fully asymmetric cases numerically.
+
+We'll first need to generalize the stationarity condition into a tensorial form.
+Start with the expression for $H(u)$ for $k$ features:
+\begin{align*}
+    H(u)
+    &= \sum_{i=1}^k (e_i^\top u)^3,
+    \qquad |u|^2 = 1
+\end{align*}
+We use the same notation as in the previous section, where $r_i = e_i^\top u$ is the overlap between $u$ and $e_i$, defining $r \in \mathbb{R}^k$ the overlap vector, and the Gram matrix $G \in \mathbb{R}^{k\times k}$ with $G_{ij} = e_i^\top e_j$.
+Also, we will need a notation for elementwise squaring:
+\begin{align*}
+    r^{\circ 2} = (r_1^2, \dots,r_k^2)^\top
+\end{align*}
+We need to find the stationary points of $H$ subject to $|u| = 1$.
+As before, introduce a Lagrange multiplier $\mu$:
+\begin{align*}
+    \mathcal{L}(u, \mu)
+    &= H(u) - \frac{\mu}{2} (u^\top u - 1) \\
+    \nabla_u H(u)
+    &= 3 \sum_{i=1}^k (e_i^\top u)^2 e_i
+    = 3 \sum_{i=1}^k r_i^2 e_i
+\end{align*}
+So stationarity requires
+\begin{align*}
+    3 \sum_{i=1}^k r_i^2 e_i
+    = \mu u
+\end{align*}
+Dot both sides with $u$, and then using $|u|^2 = 1$, we get
+\begin{align*}
+    \mu
+    &= 
+    3 \sum_{i=1}^k r_i^3
+    = 3 H(u) \\
+    \implies
+    \sum_i r_i^2 e_i
+    &= H(u) u
+\end{align*}
+Then dot both sides with each teacher direction to get
+\begin{align*}
+    \sum_{i=1}^k (e_j^\top e_i) r_i^2
+    &= H(u) (e_j^\top u) \\
+    \implies
+    \sum_{i}
+    G_{ji} r_i^2 = H(u) r_j
+\end{align*}
+Or, written as vectors,
+\begin{align*}
+    \boxed{G r^{\circ 2} = H(u) r}
+\end{align*}
+This is the requirement for local stability for any direction $u$.
+We can see that this is very similar to an eigenvalue equation, except that the $G$ acts on $r$ \emph{quadratically}, rather than linearly.
+
+We can write this as a tensorial equation.
+Write $H(u)$ in the following way:
+\begin{align*}
+    H(u)
+    &= \sum_{i=1}^k (e_i^\top u)^3 \\
+    &= \sum_{i=1}^k \sum_{a,b,c=1}^d e_{ia} e_{ib} e_{ic} u_a u_b u_c \\
+    &= \sum_{a,b,c=1}^d
+    \underbrace{\left(\sum_{i=1}^k e_{ia} e_{ib} e_{ic}\right)}_{T_{abc}} 
+    u_a u_b u_c
+\end{align*}
+Using Einstein summation notation, we can then write
+\begin{align*}
+    H(u) = T_{abc} u_a u_b u_c
+\end{align*}
+Where $T$ is a $d \times d \times d$ fully-symmetric tensor.
+
+If you plug this into the stationarity equation above, you can find the following equivalent expression:
+\begin{align*}
+    \boxed{T_{abc} u_b u_c = H(u) u_a}
+\end{align*}
+This is the standard form for a $Z$-eigenvalue problem, with $\lambda_T = H(u)$.
+
+This is also another way of seeing where the representation of $H$ as a sum of spherical harmonics comes from.
+A rank three symmetric tensor breaks down in representation theory to a trace part, which has one index and is therefore a vector, and a traceless part.
+In $k=3$, the traceless part is the degree-3 spherical harmonic, and the trace is the degree-1 harmonic.
+
+Now say we're in the symmetric case.
+Then
+\begin{align*}
+    G_{ij} = (1-\omega)\delta_{ij} + \omega
+\end{align*}
+So the components of the stationarity equation can be written
+\begin{align*}
+    (1-\omega)r_j^2
+    + \omega \sum_{i=1}^k r_i^2
+    &= H(u) r_j \\
+    \implies
+    (1-\omega)r_j^2
+    - H(u) r_j
+    + \omega \sum_{i=1}^k r_i^2 
+    &= 0
+\end{align*}
+Take the above equation for two components, $r_j$ and $r_\ell$.
+Subtracting gives
+\begin{align*}
+    (1-\omega)(r_j^2 - r_\ell)^2
+    - H(u) (r_j - r_\ell)
+    &= 0 \\
+    \implies
+    (r_j - r_\ell)
+    [(1-\omega)(r_j + r_\ell) - H(u)]
+    &= 0
+\end{align*}
+Thus, for any two components, either $r_j = r_\ell$, or
+\begin{align*}
+    r_j + r_\ell
+    &= \frac{H(u)}{1-\omega}
+\end{align*}
+Now, suppose we have three components $r_a \neq r_b \neq r_c$.
+Then
+\begin{align*}
+    (r_a + r_b)
+    - (r_b + r_c)
+    &= r_a - r_c = 0
+\end{align*}
+Thus, \emph{the components of $r$ can take only two distinct values}.
+
+Label these $x$ and $y$.
+By Vieta's root formulas (I hadn't heard of them either), we have
+\begin{align*}
+    x + y = \frac{H}{1-\omega},
+    \qquad
+    xy = \frac{\omega r^2}{1-\omega}
+\end{align*}
+where we defined $r^2 = \sum_i r_i^2$.
+For positive correlation and positive $H$, $x+y > 0$, so at least one of $x$ and $y$ is positive, and $xy > 0$, so both have the same sign.
+Thus, $x,y > 0$.
+
+Let $x > y$.
+We will next show that, if the configuration is a local maximum, then exactly one of the $r_i$'s is equal to $x$, and the rest are $y$.
+
+
 \appendix
 \section{Generalized Spherical Harmonics}
 \label{app:generalized-spherical-harmonics}
