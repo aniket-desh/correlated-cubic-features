@@ -672,11 +672,11 @@ Thus, \emph{the components of $r$ can take only two distinct values}.
 
 Label these $x$ and $y$.
 By Vieta's root formulas (I hadn't heard of them either), we have
-\begin{align*}
+\begin{align}\label{eq:vieta}
     x + y = \frac{H}{1-\omega},
     \qquad
     xy = \frac{\omega r^2}{1-\omega}
-\end{align*}
+\end{align}
 where we defined $r^2 = \sum_i r_i^2$.
 For positive correlation and positive $H$, $x+y > 0$, so at least one of $x$ and $y$ is positive, and $xy > 0$, so both have the same sign.
 Thus, $x,y > 0$.
@@ -684,6 +684,147 @@ Thus, $x,y > 0$.
 Let $x > y$.
 We will next show that, if the configuration is a local maximum, then exactly one of the $r_i$'s is equal to $x$, and the rest are $y$.
 
+Suppose $m \geq 2$.
+Then at least two teachers, WLOG $e_1$ and $e_2$, have overlap $x$: $e_1^\top u = e_2^\top u = x$.
+Consider the normalized direction
+\begin{align*}
+    v
+    = \frac{e_1 - e_2}{\sqrt{2(1-\omega)}}
+\end{align*}
+Moving along $v$ increases overlap with $e_1$ and decreases overlap with $e_2$, while not affecting other overlaps to first order.
+
+$v$ is orthogonal to $u$:
+\begin{align*}
+    v^\top u
+    = \frac{e_1^\top u - e_2^\top u}{\sqrt{2(1-\omega)}}
+    = 0
+\end{align*}
+Thus, we can perturb $u$ while maintaining the normalization constraint by taking
+\begin{align*}
+    u(\varepsilon)
+    &= u \cos\varepsilon + v \sin\varepsilon \\
+    |u(\varepsilon)|^2
+    &= |u|^2 \cos^2 \varepsilon
+    + |v|^2 \sin^2 \varepsilon
+    = 1
+\end{align*}
+The overlaps of $v$ with all teacher vectors are
+\begin{align*}
+    e_1^\top v
+    &= \frac{1 - \omega}{\sqrt{2(1-\omega)}}
+    = \sqrt{\frac{1-\omega}{2}}
+    \equiv a \\
+    e_2^\top v
+    &= -a \\
+    e_j^\top v &= 0,
+    \qquad j \geq 3
+\end{align*}
+Thus, along the perturbation, the overlaps are
+\begin{align*}
+    r_1(\varepsilon)
+    &= x \cos\varepsilon + a \sin\varepsilon \\
+    r_2(\varepsilon)
+    &= x \cos\varepsilon - a \sin\varepsilon \\
+    r_j(\varepsilon)
+    &= r_j \cos\varepsilon,
+    \qquad j \geq 3
+\end{align*}
+So we are splitting the two equal $x$ overlaps in opposite directions, while keeping the rest unchanged apart from the $\cos\varepsilon$ normalization.
+
+Now we'll calculate $H(u(\varepsilon))$.
+\begin{align*}
+    H(u(\varepsilon))
+    &= (x\cos\varepsilon + a\sin\varepsilon)^3
+    + (x\cos\varepsilon - a\sin\varepsilon)^3
+    + \sum_{j=3}^k (r_j \cos\varepsilon)^3
+\end{align*}
+Using the identity
+\begin{align*}
+    (A+B)^3 + (A-B)^3
+    = 2A^3 + 6AB^2
+\end{align*}
+we get
+\begin{align*}
+    H(u(\varepsilon))
+    &= H(u) \cos^3\varepsilon
+    + 6xa^2 \cos\varepsilon \sin^2\varepsilon \\
+    &= H(u) \cos^3\varepsilon
+    + 3x(1-\omega) \cos\varepsilon \sin^2\varepsilon \\
+    &= H(u)
+    + \left[3x(1-\omega) - \frac{3}{2} H(u) \right]\varepsilon^2 + O(\varepsilon^4)
+\end{align*}
+Using Vieta's root relations, equation \ref{eq:vieta}, we substitute $H(u) = (1-\omega)(x+y)$:
+\begin{align*}
+    3x(1-\omega) - \frac{3}{2} H(u)
+    &= 3x(1-\omega)
+    - \frac{3}{2}(1-\omega)(x+y) \\
+    &= \frac{3}{2} (1-\omega)(x-y) \\
+    \implies
+    H(u(\varepsilon))
+    &= H(u) + \frac{3}{2}(1-\omega)(x-y)\varepsilon^2 + O(\varepsilon^4)
+\end{align*}
+Since $\omega \in (0, 1)$ and $x > y$,
+\begin{align*}
+    \left. \frac{d^2 H(u(\varepsilon))}{d\varepsilon^2} \right|_{\varepsilon=0}
+    = 3(1-\omega)(x-y) > 0
+\end{align*}
+Thus, we have constructed a direction in which $H$ curves upward, meaning the original stationary point could not have been a local maximum.
+
+So, we have proved:
+\begin{enumerate}
+    \item Every positive-valued stationary point for $\omega \in (0, 1)$ has at most two overlap values $x \geq y > 0$.
+    \item If $x > y$, any configuration containing two or more copies of $x$ has a tangent direction with positive curvature.
+    \item Therefore, every local maximum with two distinct overlap values must have exactly one copy of $x$.
+\end{enumerate}
+Hence, every global maximizer is one of two forms:
+\begin{align*}
+    r = (x, x, \dots, x)
+    \quad \text{or} \quad
+    r = (x, y, \dots, y),
+    \qquad x > y
+\end{align*}
+The first case is the fully-shared, symmetric solution, and the second is the specialized, symmetry-broken solution.
+
+Now, we want to derive the critical $\omega$ value for the asymmetric solution to be the globally stable one.
+Take, WLOG, $e_1^\top u = x$, and all the other overlaps to be $y$.
+Also let $R = x/y > 1$.
+Then we want to maximize
+\begin{align*}
+    H(u)
+    &= \sum_{i=1}^k (e_i^\top u)^3,
+    \qquad |u|^2 = 1
+\end{align*}
+The Lagrange multiplier equation is
+\begin{align*}
+    3 \sum_i (e_i^\top u)^2 e_i
+    = 2\mu u
+    \implies
+    3 H(u) = 2\mu
+    \implies \sum_i (e_i^\top u)^2 e_i = H(u)u
+\end{align*}
+Taking inner products with $e_1$ and any other teacher direction gives, respectively,
+\begin{align*}
+    H(u) x
+    &= x^2 + \omega(k-1)y^2 \\
+    H(u) y
+    &= \omega x^2 + [1 + (k-2)\omega]y^2
+\end{align*}
+Substitute equation \ref{eq:vieta} in for $H(u)$ in the second equation here to get
+\begin{align*}
+    (1-\omega)(x+y)y
+    &= \omega x^2 + [1 + (k-2)\omega]y^2 \\
+    \omega x^2 - (1-\omega)xy + \omega(k-1)y^2 &= 0
+\end{align*}
+Then divide by $y$ and use $R = x/y$:
+\begin{align*}
+    \omega R^2 - (1-\omega)R + \omega(k-1) &= 0 \\
+    \implies
+    \omega
+    &= \frac{R}{R^2 + R + k-1}
+\end{align*}
+We derived a similar equation in the $k=3$ case above.
+
+Again, similarly to above, we want to get the ratio of the $H_\text{asym}$ and $H_\text{sym}$ values.
 
 \appendix
 \section{Generalized Spherical Harmonics}
