@@ -1175,6 +1175,226 @@ For $k=2$ at the marginal value $\omega=1/3$, the great-circle expression instea
 \end{align*}
 The shared direction is still a strict local maximum at this boundary, even though its quadratic curvature is zero.
 
+\section{Exact Splitting of Orthogonal Feature Groups}
+\label{sec:orthogonal-feature-groups}
+
+There is one correlation structure for which we can separate the entire population problem, including after the first committees have appeared.
+Suppose the teachers can be partitioned into groups $I_1,\ldots,I_A$, with
+\begin{align*}
+    \mathcal V_a&=\operatorname{span}\{e_i:i\in I_a\},
+    \qquad \mathcal V=\bigoplus_{a=1}^A\mathcal V_a, \\
+    e_i^\top e_j&=0
+    \qquad (i\in I_a,\ j\in I_b,\ a\ne b).
+\end{align*}
+Thus the Gram matrix is block diagonal.
+Correlations within each group can be arbitrary; we only require different groups to span mutually orthogonal subspaces.
+We keep the Gaussian input law and the reduced objective
+\begin{align*}
+    F(\mathcal C)
+    &=\lambda\sum_j b_j+\frac12\mathbb E[f_*(\mathbf x)-f_{\mathcal C}(\mathbf x)]^2, \\
+    f_{\mathcal C}(\mathbf x)
+    &=\sum_j b_j\psi_3(u_j^\top\mathbf x),
+    \qquad b_j\geq0,\quad |u_j|=1,\quad u_j\in\mathcal V,
+\end{align*}
+with fixed $\lambda>0$ and a freely varying number of committees.
+We will show that a committee spanning several orthogonal groups can always be replaced by separate committees at lower cost.
+
+Let $P_a$ be the orthogonal projection onto $\mathcal V_a$, and write $\mathbf x_a=P_a\mathbf x$.
+Since $\mathbf x\sim\mathcal N(0,I_N)$, the random vectors $\mathbf x_a$ are independent: their cross-covariances are $P_aP_b=0$ for $a\ne b$, and they are jointly Gaussian.
+The teacher is already a sum of functions of these separate inputs:
+\begin{align*}
+    f_*(\mathbf x)&=\sum_{a=1}^A f_{*,a}(\mathbf x_a), \\
+    f_{*,a}(\mathbf x_a)&=B\sum_{i\in I_a}\psi_3(e_i^\top\mathbf x_a).
+\end{align*}
+Each group contribution has zero mean.
+The important question is whether a student committee mixing several groups could nevertheless improve the fit enough to justify its cost.
+
+\subsection{Separating the first-recruited direction}
+
+First consider the angular objective $H$.
+Any unit direction in $\mathcal V$ can be decomposed as
+\begin{align*}
+    u=\sum_a t_av_a,\qquad
+    t_a=|P_au|\geq0,\qquad
+    v_a=\frac{P_au}{t_a}\in\mathcal V_a,\qquad
+    \sum_a t_a^2=1.
+\end{align*}
+Terms with $t_a=0$ can be omitted.
+The coefficients $t_a$ are nonnegative lengths; signs are included in $v_a$.
+For a teacher in group $a$, orthogonality gives $e_i^\top u=t_ae_i^\top v_a$.
+Therefore
+\begin{align*}
+    H(u)
+    &=\sum_a\sum_{i\in I_a}(e_i^\top u)^3
+      =\sum_a t_a^3H_a(v_a), \\
+    H_a(v)&=\sum_{i\in I_a}(e_i^\top v)^3,
+    \qquad M_a=\max_{\substack{v\in\mathcal V_a\\|v|=1}}H_a(v).
+\end{align*}
+Since $H_a(-v)=-H_a(v)$, each $M_a$ is nonnegative.
+Also $0\leq t_a\leq1$, so $t_a^3\leq t_a^2$.
+Putting $M=\max_a M_a$, we obtain
+\begin{align*}
+    H(u)
+    &\leq\sum_a t_a^3M_a
+    \leq M\sum_a t_a^3
+    \leq M\sum_a t_a^2=M.
+\end{align*}
+The bound is attained by choosing $u$ entirely in a group whose maximum is $M$, along one of its maximizing directions.
+Thus
+\begin{align}\label{eq:orthogonal-H-maximum}
+    \boxed{\max_{\substack{u\in\mathcal V\\|u|=1}}H(u)=\max_a M_a.}
+\end{align}
+For $M>0$, the first recruitment threshold is consequently $B_{\mathrm{on}}=\lambda/M$.
+If several groups tie for the largest positive $M_a$, their maximizing directions tie at onset, but a direction mixing them does not: two or more nonzero $t_a$ give $\sum_a t_a^3<1$.
+
+\subsection{What is removed when a committee is split}
+
+The preceding argument only concerns onset.
+To separate the full population optimization, we need to compare the actual student functions and their squared errors.
+Take one committee with output $b\psi_3(u^\top\mathbf x)$ and use the same decomposition $u=\sum_a t_av_a$.
+Conditioned on $\mathbf x_a$, put $z=v_a^\top\mathbf x_a$ and write
+\begin{align*}
+    u^\top\mathbf x=t_az+\sqrt{1-t_a^2}\,Z,
+    \qquad Z\sim\mathcal N(0,1),
+\end{align*}
+where $Z$ is independent of $\mathbf x_a$.
+For $t_a=1$ the second term is absent.
+Using $\mathbb E Z=\mathbb E Z^3=0$ and $\mathbb E Z^2=1$, we find
+\begin{align*}
+    \mathbb E[\psi_3(u^\top\mathbf x)\mid\mathbf x_a]
+    &=\frac{t_a^3z^3+3t_a(1-t_a^2)z-3t_az}{\sqrt6} \\
+    &=\frac{t_a^3(z^3-3z)}{\sqrt6}
+      =t_a^3\psi_3(v_a^\top\mathbf x_a).
+\end{align*}
+Thus the part depending on group $a$ alone is itself a cubic committee, with strength $bt_a^3$.
+This suggests the replacement
+\begin{align}\label{eq:orthogonal-committee-replacement}
+    b\psi_3(u^\top\mathbf x)
+    \quad\longrightarrow\quad
+    b\sum_a t_a^3\psi_3(v_a^\top\mathbf x_a).
+\end{align}
+This replacement changes the function: it removes terms that involve inputs from more than one group.
+
+For example, with two groups let $u=tv+sw$, where $t^2+s^2=1$ and $v,w$ are unit vectors in the respective subspaces.
+Then $Z=v^\top\mathbf x$ and $W=w^\top\mathbf x$ are independent standard Gaussians.
+Expanding the cubic and using $1-t^2=s^2$ and $1-s^2=t^2$ gives
+\begin{align*}
+    \psi_3(tZ+sW)
+    &=t^3\psi_3(Z)+s^3\psi_3(W) \\
+    &\quad+\frac{3t^2s}{\sqrt6}(Z^2-1)W
+      +\frac{3ts^2}{\sqrt6}Z(W^2-1) \\
+    &=t^3\psi_3(Z)+s^3\psi_3(W)
+      +\sqrt3\,t^2s\,\psi_2(Z)W
+      +\sqrt3\,ts^2\,Z\psi_2(W),
+\end{align*}
+where $\psi_2(z)=(z^2-1)/\sqrt2$.
+The first two terms are retained by \eqref{eq:orthogonal-committee-replacement}.
+The last two are mixed terms, and averaging either one over either input leaves zero.
+
+For any number of groups, define the removed part by
+\begin{align*}
+    m_u(\mathbf x)
+    =\psi_3(u^\top\mathbf x)
+      -\sum_a t_a^3\psi_3(v_a^\top\mathbf x_a).
+\end{align*}
+The conditional expectation calculation gives
+\begin{align*}
+    \mathbb E[m_u\mid\mathbf x_a]
+    &=t_a^3\psi_3(v_a^\top\mathbf x_a)
+      -t_a^3\psi_3(v_a^\top\mathbf x_a) \\
+    &\quad-\sum_{b\ne a}t_b^3\mathbb E[\psi_3(v_b^\top\mathbf x_b)]
+      =0.
+\end{align*}
+Here independence lets us average each other group's term unconditionally, and every cubic Hermite has mean zero.
+Consequently, for any square-integrable function $h_a$ of group $a$,
+\begin{align*}
+    \mathbb E[m_u(\mathbf x)h_a(\mathbf x_a)]
+    =\mathbb E\!\left[h_a(\mathbf x_a)\mathbb E[m_u\mid\mathbf x_a]\right]
+    =0.
+\end{align*}
+The removed part is therefore orthogonal, in the squared-error inner product, to every sum of functions of individual groups.
+
+\subsection{Comparing the full free energies}
+
+Now split every committee in a population $\mathcal C$.
+Writing $u_j=\sum_a t_{ja}v_{ja}$, the original and split students are
+\begin{align*}
+    f_{\mathcal C}&=g+m, \\
+    g(\mathbf x)&=\sum_{j,a}b_jt_{ja}^3\psi_3(v_{ja}^\top\mathbf x_a), \\
+    m(\mathbf x)&=\sum_j b_jm_{u_j}(\mathbf x).
+\end{align*}
+Both $f_*$ and $g$ are sums of functions of individual groups.
+The orthogonality just proved therefore implies $\mathbb E[(f_*-g)m]=0$.
+Expanding the error gives the exact identity
+\begin{align*}
+    \mathbb E[f_*-f_{\mathcal C}]^2
+    &=\mathbb E[(f_*-g)-m]^2 \\
+    &=\mathbb E[f_*-g]^2-2\mathbb E[(f_*-g)m]+\mathbb E[m^2] \\
+    &=\mathbb E[f_*-g]^2+\mathbb E[m^2].
+\end{align*}
+Thus splitting cannot increase the fitting error.
+We use the total removed function $m$ here, so the argument also allows mixed terms from different committees to cancel one another.
+
+The total strength of the split population satisfies
+\begin{align*}
+    \sum_{j,a}b_jt_{ja}^3
+    \leq\sum_j b_j\sum_a t_{ja}^2
+    =\sum_j b_j.
+\end{align*}
+Combining the two changes yields
+\begin{align}\label{eq:orthogonal-free-energy-difference}
+    \boxed{
+    F(\mathcal C_{\mathrm{split}})-F(\mathcal C)
+    =-\lambda\sum_j b_j\left(1-\sum_a t_{ja}^3\right)
+      -\frac12\mathbb E[m^2]\leq0.}
+\end{align}
+If any committee of positive strength occupies more than one group, its sum $\sum_a t_{ja}^3$ is strictly less than one.
+For $\lambda>0$, splitting then strictly lowers the free energy, even if the total mixed function happens to vanish.
+It follows that every positive-strength committee in an optimal population lies entirely within one group.
+
+Once committees have this form, write $f_{\mathcal C}=\sum_a f_{\mathcal C_a}(\mathbf x_a)$ and define the group residuals
+\begin{align*}
+    R_a(\mathbf x_a)=f_{*,a}(\mathbf x_a)-f_{\mathcal C_a}(\mathbf x_a).
+\end{align*}
+These residuals are centered and independent across groups, so for $a\ne b$,
+\begin{align*}
+    \mathbb E[R_aR_b]=\mathbb E[R_a]\mathbb E[R_b]=0.
+\end{align*}
+The objective therefore separates:
+\begin{align*}
+    F(\mathcal C)
+    &=\sum_a\left[
+       \lambda\sum_{j\in\mathcal C_a}b_j
+       +\frac12\mathbb E R_a^2\right]
+      \equiv\sum_a F_a(\mathcal C_a).
+\end{align*}
+Conversely, combining any collection of group populations gives an admissible population for the full problem.
+Together with \eqref{eq:orthogonal-free-energy-difference}, this proves
+\begin{align}\label{eq:orthogonal-population-minimum}
+    \boxed{\inf_{\mathcal C}F(\mathcal C)
+    =\sum_a\inf_{\mathcal C_a}F_a(\mathcal C_a).}
+\end{align}
+In particular, whenever group minimizers are chosen, their union is a global minimizer.
+This holds at every signal strength for the reduced objective with fixed $\lambda$.
+Each group can recruit and split its committees according to its own correlations, without changing the optimization in the other groups.
+For a nonzero group overlap, its individual onset is $B_{\mathrm{on},a}=\lambda/M_a$; groups with smaller $M_a$ can start learning after the first group has already recruited.
+
+As a simple check, if all teachers are mutually orthogonal, each group can contain just one teacher.
+After absorbing signs into directions and combining committees along that teacher, the group objective is
+\begin{align*}
+    F_a(b_a)=\lambda b_a+\frac12(B-b_a)^2,\qquad b_a\geq0.
+\end{align*}
+Differentiating gives $F_a'(b_a)=\lambda+b_a-B$, so
+\begin{align*}
+    b_a=(B-\lambda)_+,\qquad (z)_+=\max\{z,0\}.
+\end{align*}
+Each teacher is learned by its own committee, with no advantage from a direction mixing teachers.
+
+The assumptions matter for the exact separation.
+The proof uses Gaussian independence and the cubic Hermite conditional expectation, together with the penalty on total strength and the freedom to introduce additional committees.
+A fixed upper limit on their number, an extra cost per committee, or a constraint coupling group strengths would require a separate argument.
+Likewise, orthogonal teacher directions alone do not give the required independence for a general non-Gaussian input law.
+
 \appendix
 \section{Generalized Spherical Harmonics}
 \label{app:generalized-spherical-harmonics}
