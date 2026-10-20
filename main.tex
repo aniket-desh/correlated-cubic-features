@@ -378,7 +378,7 @@ $R=1$ is the $x = y$ symmetric case, but we're interested in the asymmetric one,
     \implies
     \omega &= \frac{R}{R^2 + R + 2}
 \end{align}
-This equation will be satisfied exactly when the global maximum of $H$ is asymmetric.
+This equation is necessary for an asymmetric stationary point; we still need to compare its value of $H$ with the symmetric solution.
 
 Recall that for the symmetric case, $H_\text{sym}^2 = 3^2c^6 = 1/3 \times (1+2\omega)^3$, so
 \begin{align*}
@@ -395,7 +395,7 @@ We can write $r = y(R, 1, 1)$, which lets us rewrite the $|u|^2 = 1$ constraint 
 We'll let the denominator $D = (1+\omega)R^2 - 4\omega R + 2$, so
 \begin{align*}
     y^6
-    &= \frac{(1-\omega)^3 (1+2\omega))^3}{D^3} \\
+    &= \frac{(1-\omega)^3 (1+2\omega)^3}{D^3} \\
     \implies
     \left( \frac{H_\text{asym}}{H_\text{sh}} \right)^2
     &= \frac{3(1-\omega)^3 (R^3+2)^2}{D^3}
@@ -405,7 +405,7 @@ Then using equation \ref{eq:stationarity},
     1-\omega
     &= \frac{R^2+2}{R^2+R+2} \\
     D
-    &= \frac{(R+2)(R^3+3)}{R^2+R+2}
+    &= \frac{(R+2)(R^3+2)}{R^2+R+2}
 \end{align*}
 Plugging these into the above, we get
 \begin{align*}
@@ -415,7 +415,7 @@ Plugging these into the above, we get
 The crossover point in favorability here is when the numerator and denominator are equal, which we can find:
 \begin{align*}
     0
-    &= 3(R^2+2)^2 - (R+2)^3(R^3+2)
+    &= 3(R^2+2)^3 - (R+2)^3(R^3+2)
     = 2(R-1)^3 (R^3-4)
 \end{align*}
 So, they are equally favored when (trivially) $R=1$, and nontrivially when $R = 2^{2/3}$.
@@ -430,7 +430,7 @@ How large can $\omega$ get and keep the asymmetric solution locally stable?
 Maximize equation \ref{eq:stationarity}:
 \begin{align*}
     \frac{d\omega}{dR}
-    &= \frac{(R^2 + R + 2) - R(2R+2)}{(R^2+R+2)^2} \\
+    &= \frac{(R^2 + R + 2) - R(2R+1)}{(R^2+R+2)^2} \\
     &= \frac{2-R^2}{(R^2+R+2)^2}
 \end{align*}
 So the max is at $R = 2^{1/2}$, and
@@ -439,9 +439,12 @@ So the max is at $R = 2^{1/2}$, and
     &= \frac{\sqrt{2}}{4+\sqrt{2}}
     \approx 0.261204
 \end{align*}
-So for correlations above $\omega_\text{spin}$, the shared feature is global free energy minimum, and the only local minimum. At $\omega_c = 2^{1/3}-1$, the asymmetric solution becomes a local minimum, but the shared feature is still global minimum.
-Then between $\omega_c$ and $\omega = 1/4$, the symmetric solution remains locally-stable, but the asymmetric solution is the global minimum.
-And below $\omega = 1/4$, the symmetric solution loses local stability, and the asymmetric solution is the only stable one.
+So for correlations above $\omega_\text{spin}$, the shared direction is the only positive-valued local maximum of $H$.
+As we lower $\omega$ through $\omega_\text{spin}$, an asymmetric local maximum appears, but the shared direction remains globally favored until $\omega_c = 2^{1/3}-1$.
+At $\omega_c$, the two have equal $H$.
+Between $\omega_c$ and $\omega = 1/4$, the symmetric solution remains locally stable, but the asymmetric solution is the global maximum.
+Below $\omega = 1/4$, the symmetric solution loses local stability.
+These statements concern which directions are favored at first recruitment; later population transitions require the overlap with the residual target.
 
 \section{Spherical Harmonics for Any Number of Cubic Features}
 \label{sec:cubic-spherical-harmonics}
@@ -546,7 +549,7 @@ The same proof also allows unequal feature strengths: replacing each summand in 
 The degree-one component vanishes exactly when this weighted sum of directions is zero.
 Although the target consists of cubic Hermite features in the Gaussian input, its overlap with a candidate committee generally contains both degree-one and degree-three spherical harmonics as a function of the committee direction.
 
-\section{$k$ Features}
+\section{\texorpdfstring{$k$}{k} Features}
 
 It turns out that generalizing the solution to $k$ features is not terribly difficult!
 It will turn out that, for $k$ features, having some kind of symmetries in the problem will be important for deriving exact solutions.
@@ -600,7 +603,7 @@ Or, written as vectors,
 \begin{align*}
     \boxed{G r^{\circ 2} = H(u) r}
 \end{align*}
-This is the requirement for local stability for any direction $u$.
+This is the stationarity condition for any direction $u$; local stability additionally requires checking the curvature along the sphere.
 We can see that this is very similar to an eigenvalue equation, except that the $G$ acts on $r$ \emph{quadratically}, rather than linearly.
 
 We can write this as a tensorial equation.
@@ -629,7 +632,7 @@ This is also another way of seeing where the representation of $H$ as a sum of s
 A rank three symmetric tensor breaks down in representation theory to a trace part, which has one index and is therefore a vector, and a traceless part.
 In $k=3$, the traceless part is the degree-3 spherical harmonic, and the trace is the degree-1 harmonic.
 
-Now say we're in the symmetric case.
+Now say we're in the symmetric case, with $k\geq2$ and $0<\omega<1$.
 Then
 \begin{align*}
     G_{ij} = (1-\omega)\delta_{ij} + \omega
@@ -648,7 +651,7 @@ So the components of the stationarity equation can be written
 Take the above equation for two components, $r_j$ and $r_\ell$.
 Subtracting gives
 \begin{align*}
-    (1-\omega)(r_j^2 - r_\ell)^2
+    (1-\omega)(r_j^2 - r_\ell^2)
     - H(u) (r_j - r_\ell)
     &= 0 \\
     \implies
@@ -661,7 +664,7 @@ Thus, for any two components, either $r_j = r_\ell$, or
     r_j + r_\ell
     &= \frac{H(u)}{1-\omega}
 \end{align*}
-Now, suppose we have three components $r_a \neq r_b \neq r_c$.
+Now, suppose we have three pairwise distinct components $r_a$, $r_b$, and $r_c$.
 Then
 \begin{align*}
     (r_a + r_b)
@@ -684,7 +687,7 @@ Thus, $x,y > 0$.
 Let $x > y$.
 We will next show that, if the configuration is a local maximum, then exactly one of the $r_i$'s is equal to $x$, and the rest are $y$.
 
-Suppose $m \geq 2$.
+Suppose there are at least two copies of the larger overlap $x$.
 Then at least two teachers, WLOG $e_1$ and $e_2$, have overlap $x$: $e_1^\top u = e_2^\top u = x$.
 Consider the normalized direction
 \begin{align*}
@@ -776,6 +779,7 @@ So, we have proved:
     \item If $x > y$, any configuration containing two or more copies of $x$ has a tangent direction with positive curvature.
     \item Therefore, every local maximum with two distinct overlap values must have exactly one copy of $x$.
 \end{enumerate}
+Since $H(e_i)=1+(k-1)\omega^3>0$, every global maximizer has positive $H$ and is covered by this argument.
 Hence, every global maximizer is one of two forms:
 \begin{align*}
     r = (x, x, \dots, x)
@@ -797,9 +801,9 @@ Then we want to maximize
 The Lagrange multiplier equation is
 \begin{align*}
     3 \sum_i (e_i^\top u)^2 e_i
-    = 2\mu u
+    = \mu u
     \implies
-    3 H(u) = 2\mu
+    3 H(u) = \mu
     \implies \sum_i (e_i^\top u)^2 e_i = H(u)u
 \end{align*}
 Taking inner products with $e_1$ and any other teacher direction gives, respectively,
@@ -815,16 +819,150 @@ Substitute equation \ref{eq:vieta} in for $H(u)$ in the second equation here to 
     &= \omega x^2 + [1 + (k-2)\omega]y^2 \\
     \omega x^2 - (1-\omega)xy + \omega(k-1)y^2 &= 0
 \end{align*}
-Then divide by $y$ and use $R = x/y$:
-\begin{align*}
+Then divide by $y^2$ and use $R = x/y$:
+\begin{align}\label{eq:k-feature-stationarity}
     \omega R^2 - (1-\omega)R + \omega(k-1) &= 0 \\
     \implies
     \omega
     &= \frac{R}{R^2 + R + k-1}
-\end{align*}
+\end{align}
 We derived a similar equation in the $k=3$ case above.
 
 Again, similarly to above, we want to get the ratio of the $H_\text{asym}$ and $H_\text{sym}$ values.
+For the symmetric direction, normalize the sum of the teacher vectors:
+\begin{align*}
+    e_0
+    &= \frac{\sum_{i=1}^k e_i}{\sqrt{k[1+(k-1)\omega]}}, \\
+    e_i^\top e_0
+    &= \sqrt{\frac{1+(k-1)\omega}{k}}
+    \equiv c_k.
+\end{align*}
+All $k$ overlaps are equal to $c_k$, so
+\begin{align*}
+    H_\text{sym} &= kc_k^3,
+    \qquad H_\text{sym}^2=\frac{[1+(k-1)\omega]^3}{k}.
+\end{align*}
+For the asymmetric direction, $r=y(R,1,\ldots,1)$ gives
+\begin{align*}
+    H_\text{asym}=y^3(R^3+k-1).
+\end{align*}
+Thus the ratio we need is
+\begin{align*}
+    \left(\frac{H_\text{asym}}{H_\text{sym}}\right)^2
+    =\frac{k y^6(R^3+k-1)^2}{[1+(k-1)\omega]^3}.
+\end{align*}
+As in the three-feature case, the remaining step is to eliminate $y$ using the normalization constraint, and then eliminate $\omega$ using the stationarity equation.
+
+The inverse Gram matrix for $k$ equally correlated teachers is
+\begin{align*}
+    G^{-1}
+    =\frac{1}{1-\omega}
+    \left[I-\frac{\omega}{1+(k-1)\omega}\mathbf 1\mathbf 1^\top\right],
+\end{align*}
+where $\mathbf 1$ is the vector of $k$ ones.
+Since $|u|^2=r^\top G^{-1}r=1$, we get
+\begin{align*}
+    1
+    &=\frac{y^2}{1-\omega}
+    \left[R^2+k-1-\frac{\omega(R+k-1)^2}{1+(k-1)\omega}\right] \\
+    \implies y^2
+    &=\frac{(1-\omega)[1+(k-1)\omega]}{D},
+\end{align*}
+where, expanding the denominator,
+\begin{align*}
+    D
+    &=[1+(k-1)\omega](R^2+k-1)-\omega(R+k-1)^2 \\
+    &=[1+(k-2)\omega]R^2-2(k-1)\omega R+k-1.
+\end{align*}
+Cubing $y^2$ and substituting into the ratio cancels the factor $[1+(k-1)\omega]^3$:
+\begin{align*}
+    \left(\frac{H_\text{asym}}{H_\text{sym}}\right)^2
+    =\frac{k(1-\omega)^3(R^3+k-1)^2}{D^3}.
+\end{align*}
+
+Now use equation \eqref{eq:k-feature-stationarity} to replace $\omega$ by $R$.
+The two factors we need simplify to
+\begin{align*}
+    1-\omega
+    &=\frac{R^2+k-1}{R^2+R+k-1}, \\
+    D
+    &=\frac{R^4+(k-1)R^3+(k-1)R+(k-1)^2}{R^2+R+k-1} \\
+    &=\frac{(R+k-1)(R^3+k-1)}{R^2+R+k-1}.
+\end{align*}
+Substituting these expressions and cancelling common factors gives
+\begin{align}\label{eq:k-feature-H-ratio}
+    \boxed{\left(\frac{H_\text{asym}}{H_\text{sym}}\right)^2
+    =\frac{k(R^2+k-1)^3}{(R+k-1)^3(R^3+k-1)}.}
+\end{align}
+Both values of $H$ are positive, so comparing their squares gives the same ordering as comparing $H$ itself.
+
+The crossover occurs when the numerator and denominator of \eqref{eq:k-feature-H-ratio} are equal.
+To see the factorization more clearly, write $q=k-1$ temporarily:
+\begin{align*}
+    0
+    &=(q+1)(R^2+q)^3-(R+q)^3(R^3+q) \\
+    &=q\left[R^6-3R^5+3R^4-(1+q^2)R^3
+       +3q^2R^2-3q^2R+q^2\right] \\
+    &=q(R-1)^3(R^3-q^2).
+\end{align*}
+The root $R=1$ is the symmetric direction itself.
+For $k>2$, the nontrivial crossing is therefore
+\begin{align*}
+    R_c^3=(k-1)^2,
+    \qquad R_c=(k-1)^{2/3}>1.
+\end{align*}
+Moreover, since $R>1$ and all denominators in \eqref{eq:k-feature-H-ratio} are positive,
+\begin{align*}
+    H_\text{asym}>H_\text{sym}
+    \quad\Longleftrightarrow\quad R>R_c.
+\end{align*}
+
+We still need to check which stationary branch this crossing lies on.
+Solving the quadratic in equation \eqref{eq:k-feature-stationarity} gives
+\begin{align*}
+    R_\pm(\omega)
+    =\frac{1-\omega\pm\sqrt{(1-\omega)^2-4(k-1)\omega^2}}{2\omega}.
+\end{align*}
+The roots are real only for
+\begin{align*}
+    \omega\leq\frac{1}{1+2\sqrt{k-1}}
+    \equiv\omega_\text{spin}(k),
+\end{align*}
+and their product is $R_+R_-=k-1$.
+Thus $R_-\leq\sqrt{k-1}\leq R_+$.
+For $k>2$, $R_c=(k-1)^{2/3}>\sqrt{k-1}$, so the smaller root, whenever it satisfies $R_->1$, always has lower $H$ than the shared direction.
+Only $R_+$ can be globally favored.
+On this larger-root branch,
+\begin{align*}
+    \frac{d\omega}{dR}
+    &=\frac{(R^2+R+k-1)-R(2R+1)}{(R^2+R+k-1)^2} \\
+    &=\frac{k-1-R^2}{(R^2+R+k-1)^2}<0,
+    \qquad R>\sqrt{k-1}.
+\end{align*}
+So increasing $R$ past $R_c$ means decreasing $\omega$ below the critical correlation.
+Since we have already exhausted the possible forms of a global maximizer, this comparison determines the global transition, rather than only a local-stability boundary.
+
+Finally, substituting $R_c$ into equation \eqref{eq:k-feature-stationarity} gives
+\begin{align}\label{eq:k-feature-omega-critical}
+    \omega_c(k)
+    &=\frac{(k-1)^{2/3}}{(k-1)^{4/3}+(k-1)^{2/3}+k-1} \\
+    &=\boxed{\frac{1}{1+(k-1)^{1/3}+(k-1)^{2/3}}.}
+\end{align}
+For $0<\omega<\omega_c(k)$, one of the $k$ equivalent asymmetric directions is favored; for $\omega>\omega_c(k)$, the shared direction is favored.
+At $\omega_c(k)$ and $k>2$, the shared direction and the $k$ distinct asymmetric directions have equal $H$.
+The asymmetric overlap ratio is still $R_c>1$ there, so the maximizing direction changes discontinuously.
+
+As a check, for three features this reduces to
+\begin{align*}
+    \omega_c(3)
+    =\frac{1}{1+2^{1/3}+2^{2/3}}
+    =2^{1/3}-1,
+\end{align*}
+exactly as above.
+For $k=2$, $R_c=1$: the asymmetric branch merges into the shared direction continuously at $\omega_c(2)=1/3$, rather than crossing it at a distinct direction.
+At $\omega=0$, the maximizers are the individual orthogonal teachers, obtained as the limit $R_+\to\infty$; at $\omega=1$, all teachers coincide and only the shared direction remains.
+For large $k$, the critical correlation scales as $\omega_c(k)\sim k^{-2/3}$.
+As in the three-feature calculation, this is the correlation transition in the direction first recruited from the unaligned state, not the later splitting threshold of an occupied committee.
 
 \appendix
 \section{Generalized Spherical Harmonics}
