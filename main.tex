@@ -964,6 +964,217 @@ At $\omega=0$, the maximizers are the individual orthogonal teachers, obtained a
 For large $k$, the critical correlation scales as $\omega_c(k)\sim k^{-2/3}$.
 As in the three-feature calculation, this is the correlation transition in the direction first recruited from the unaligned state, not the later splitting threshold of an occupied committee.
 
+\section{Local Stability with Constant Row Sums}
+\label{sec:constant-row-sum-stability}
+
+The shared direction can remain stationary even when the pairwise correlations are not all equal.
+A useful condition is that every teacher has the same total overlap with the others, including itself:
+\begin{align*}
+    G\mathbf 1=s\mathbf 1,
+    \qquad \sum_{j=1}^k G_{ij}=s>0.
+\end{align*}
+Here $\mathbf 1$ is the vector of $k$ ones, and $G_{ij}=e_i^\top e_j$ is still the Gram matrix of unit teacher directions.
+We keep equal feature amplitudes, so the angular objective is
+\begin{align*}
+    H(u)=\sum_{i=1}^k(e_i^\top u)^3,
+    \qquad |u|=1.
+\end{align*}
+We will first show that the normalized sum of the teachers is stationary, then determine when every small angular perturbation lowers $H$ to quadratic order.
+We work in the teacher span $\mathcal V$ and assume $\dim\mathcal V\geq2$, so there are angular directions to perturb.
+
+Start by defining $w=\sum_i e_i$.
+The constant-row-sum condition fixes its norm:
+\begin{align*}
+    |w|^2
+    &=\sum_{i,j=1}^k e_i^\top e_j
+    =\sum_{i=1}^k\sum_{j=1}^k G_{ij}
+    =ks.
+\end{align*}
+Thus the shared unit direction is
+\begin{align*}
+    u_0=\frac{\sum_i e_i}{\sqrt{ks}}.
+\end{align*}
+Its overlap with any teacher is
+\begin{align*}
+    e_i^\top u_0
+    &=\frac{\sum_j e_i^\top e_j}{\sqrt{ks}}
+    =\frac{s}{\sqrt{ks}}
+    =\sqrt{\frac{s}{k}}
+    \equiv c.
+\end{align*}
+All teachers therefore have the same overlap $c$, even though individual entries of $G$ can differ.
+In particular,
+\begin{align*}
+    H(u_0)=kc^3=sc,
+\end{align*}
+where we used $kc^2=s$.
+
+Now evaluate the gradient at this direction:
+\begin{align*}
+    \nabla_u H(u_0)
+    &=3\sum_i(e_i^\top u_0)^2e_i
+    =3c^2\sum_i e_i \\
+    &=3c^2\sqrt{ks}\,u_0
+    =3sc\,u_0
+    =3H(u_0)u_0.
+\end{align*}
+This is precisely the stationarity equation from the previous section.
+The gradient is radial, so it has no component along the sphere.
+Stationarity alone does not tell us whether the shared direction is a maximum; we need its curvature along tangent directions.
+
+Choose any unit vector $v\in\mathcal V$ perpendicular to $u_0$.
+As in the earlier splitting calculation, use a great-circle perturbation:
+\begin{align*}
+    u(\varepsilon)=u_0\cos\varepsilon+v\sin\varepsilon,
+    \qquad |v|=1,
+    \qquad v^\top u_0=0.
+\end{align*}
+The constraint is preserved exactly because
+\begin{align*}
+    |u(\varepsilon)|^2
+    &=|u_0|^2\cos^2\varepsilon+|v|^2\sin^2\varepsilon
+      +2u_0^\top v\cos\varepsilon\sin\varepsilon \\
+    &=\cos^2\varepsilon+\sin^2\varepsilon=1.
+\end{align*}
+Let $a_i=e_i^\top v$ be the overlaps of the perturbation direction with the teachers.
+Their sum vanishes:
+\begin{align*}
+    \sum_i a_i
+    =\left(\sum_i e_i\right)^\top v
+    =\sqrt{ks}\,u_0^\top v=0.
+\end{align*}
+The perturbed teacher overlaps are $e_i^\top u(\varepsilon)=c\cos\varepsilon+a_i\sin\varepsilon$, so expanding each cube gives
+\begin{align*}
+    H(u(\varepsilon))
+    &=kc^3\cos^3\varepsilon
+      +3c^2\cos^2\varepsilon\sin\varepsilon\sum_i a_i \\
+    &\quad+3c\cos\varepsilon\sin^2\varepsilon\sum_i a_i^2
+      +\sin^3\varepsilon\sum_i a_i^3 \\
+    &=H(u_0)\cos^3\varepsilon
+      +3c\cos\varepsilon\sin^2\varepsilon\sum_i a_i^2
+      +\sin^3\varepsilon\sum_i a_i^3.
+\end{align*}
+The term linear in the $a_i$ cancels because $\sum_i a_i=0$.
+Using
+\begin{align*}
+    \cos^3\varepsilon&=1-\frac32\varepsilon^2+O(\varepsilon^4), \\
+    \cos\varepsilon\sin^2\varepsilon&=\varepsilon^2+O(\varepsilon^4),
+    \qquad \sin^3\varepsilon=\varepsilon^3+O(\varepsilon^5),
+\end{align*}
+we find
+\begin{align*}
+    H(u(\varepsilon))
+    &=H(u_0)
+      +\left[3c\sum_i a_i^2-\frac32 H(u_0)\right]\varepsilon^2
+      +\left(\sum_i a_i^3\right)\varepsilon^3+O(\varepsilon^4) \\
+    &=H(u_0)
+      +\frac{3c}{2}\left[2\sum_i a_i^2-s\right]\varepsilon^2
+      +\left(\sum_i a_i^3\right)\varepsilon^3+O(\varepsilon^4).
+\end{align*}
+Thus the curvature in direction $v$ is
+\begin{align}\label{eq:row-sum-tangent-curvature}
+    \left.\frac{d^2H(u(\varepsilon))}{d\varepsilon^2}\right|_{\varepsilon=0}
+    =3c\left[2\sum_i(e_i^\top v)^2-s\right].
+\end{align}
+The negative term comes from maintaining the unit-norm constraint: tilting away from $u_0$ reduces the shared component by the factor $\cos\varepsilon$.
+
+We can now turn the maximization over perturbations into a matrix eigenvalue problem.
+Let $E$ be the matrix whose columns are the teacher vectors, so
+\begin{align*}
+    E=(e_1\ \cdots\ e_k),
+    \qquad G=E^\top E,
+    \qquad \sum_i(e_i^\top v)^2=|E^\top v|^2=v^\top EE^\top v.
+\end{align*}
+Equivalently, the Hessian of the constrained Lagrangian at $u_0$, restricted to tangent vectors, is
+\begin{align*}
+    \nabla_u^2\mathcal L(u_0,\mu)
+    &=6c\,EE^\top-\mu I
+    =3c(2EE^\top-sI),
+    \qquad \mu=3H(u_0)=3sc.
+\end{align*}
+This agrees with the great-circle calculation in \eqref{eq:row-sum-tangent-curvature}.
+
+To express the relevant eigenvalues using $G$, first note that $\mathbf 1^\perp$ is an invariant subspace of $G$.
+Indeed, if $\mathbf 1^\top a=0$, then symmetry of $G$ gives
+\begin{align*}
+    \mathbf 1^\top Ga=(G\mathbf 1)^\top a=s\mathbf 1^\top a=0.
+\end{align*}
+Suppose $a$ is a unit eigenvector in this subspace, with positive eigenvalue $\gamma$:
+\begin{align*}
+    Ga=\gamma a,
+    \qquad |a|=1,
+    \qquad \mathbf 1^\top a=0.
+\end{align*}
+Define $v=Ea/\sqrt\gamma$.
+Its norm and its overlap with the shared direction are
+\begin{align*}
+    |v|^2
+    &=\frac{a^\top E^\top Ea}{\gamma}
+    =\frac{a^\top Ga}{\gamma}=1, \\
+    u_0^\top v
+    &=\frac{(E^\top u_0)^\top a}{\sqrt\gamma}
+    =\frac{c\mathbf 1^\top a}{\sqrt\gamma}=0.
+\end{align*}
+So $v$ is an allowed unit tangent direction.
+Moreover,
+\begin{align*}
+    EE^\top v
+    &=\frac{EE^\top Ea}{\sqrt\gamma}
+    =\frac{EGa}{\sqrt\gamma}
+    =\gamma v.
+\end{align*}
+Conversely, a positive-eigenvalue tangent eigenvector $v$ of $EE^\top$ maps back to $a=E^\top v/\sqrt\gamma$.
+This $a$ has unit norm, satisfies $Ga=\gamma a$, and obeys $\mathbf 1^\top a=\sqrt{ks}\,u_0^\top v/\sqrt\gamma=0$.
+Therefore the tangent eigenvalues of $EE^\top$ within the teacher span are exactly the positive eigenvalues of $G$ on $\mathbf 1^\perp$.
+If the teachers are linearly dependent, zero eigenvalues of $G$ correspond to $Ea=0$ and add no physical perturbation directions.
+
+The largest quadratic form on unit tangent vectors is consequently
+\begin{align*}
+    \max_{\substack{v\in\mathcal V,\ |v|=1\\v^\top u_0=0}}
+    \sum_i(e_i^\top v)^2
+    =\lambda_{\max}\!\left(G\big|_{\mathbf 1^\perp}\right).
+\end{align*}
+Here the restriction means that we exclude the all-ones direction and keep all eigenmodes orthogonal to it.
+Since $c>0$, equation \eqref{eq:row-sum-tangent-curvature} is negative for every nonzero tangent direction precisely when
+\begin{align}\label{eq:constant-row-sum-stability}
+    \boxed{2\lambda_{\max}\!\left(G\big|_{\mathbf 1^\perp}\right)<s.}
+\end{align}
+This is the condition for a negative-definite tangent Hessian, and hence a strict local maximum of $H$.
+If the inequality is reversed, an eigenvector with $2\gamma>s$ supplies a direction in which $H$ increases, so $u_0$ is not a local maximum.
+If one also allows perturbations outside the teacher span, those have $E^\top v=0$ and curvature $-3cs<0$; they do not create an additional instability.
+
+Equality requires more care.
+When $2\lambda_{\max}=s$, the quadratic term vanishes along at least one mode, so the cubic and higher-order terms decide stability.
+For example, if $\sum_i a_i^3\ne0$ along such a mode, one sign of $\varepsilon$ increases $H$ at cubic order.
+If that cubic term also vanishes, we must continue the expansion.
+Thus \eqref{eq:constant-row-sum-stability} is an exact test for negative quadratic curvature, but is not a necessary condition for every possible strict local maximum with a degenerate Hessian.
+
+As a check, return to equal pairwise correlations:
+\begin{align*}
+    G=(1-\omega)I+\omega\mathbf 1\mathbf 1^\top,
+    \qquad s=1+(k-1)\omega.
+\end{align*}
+For any $a\perp\mathbf 1$, the second term annihilates $a$, giving
+\begin{align*}
+    Ga=(1-\omega)a,
+    \qquad \lambda_{\max}\!\left(G\big|_{\mathbf 1^\perp}\right)=1-\omega.
+\end{align*}
+The stability condition reduces to
+\begin{align*}
+    2(1-\omega)&<1+(k-1)\omega \\
+    \implies 1&<(k+1)\omega \\
+    \implies \omega&>\frac{1}{k+1}.
+\end{align*}
+For $k=3$, this is the $1/4$ local-stability boundary found earlier.
+It is smaller than the global transition $\omega_c(3)=2^{1/3}-1$: the shared direction can resist every sufficiently small tilt while a more distant asymmetric direction has higher $H$.
+For $k=2$ at the marginal value $\omega=1/3$, the great-circle expression instead gives
+\begin{align*}
+    \frac{H(u(\varepsilon))}{H(u_0)}
+    =\frac32\cos\varepsilon-\frac12\cos^3\varepsilon
+    =1-\frac38\varepsilon^4+O(\varepsilon^6).
+\end{align*}
+The shared direction is still a strict local maximum at this boundary, even though its quadratic curvature is zero.
+
 \appendix
 \section{Generalized Spherical Harmonics}
 \label{app:generalized-spherical-harmonics}
