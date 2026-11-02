@@ -1395,6 +1395,159 @@ The proof uses Gaussian independence and the cubic Hermite conditional expectati
 A fixed upper limit on their number, an extra cost per committee, or a constraint coupling group strengths would require a separate argument.
 Likewise, orthogonal teacher directions alone do not give the required independence for a general non-Gaussian input law.
 
+\section{Hierarchy Model}
+
+We want to start trying to understand how models represent hierarchies of features.
+The easiest version of this is the \emph{symmetric two-level tree} hierarchy, which conceptually should be thought of as a tree with $m$ parent variables, with equal pairwise correlations $\rho$, each of which has $q$ child variables, with the children of a given parent all correlated to the parent at $c$.
+In our teacher, we will represent the parents as vectors, $p_a$, and the children as vectors that are organized around each parent:
+\begin{align*}
+    e_{ab} = c p_a + \sqrt{1-c^2} v_{ab}
+\end{align*}
+To preserve symmetry between parent branches, we take the residuals $v_{ab}$ to be perpendicular to the entire span of the parent, and take the residual subspaces belonging to different parents as mutually orthogonal.
+
+Note that \emph{the parent vectors are not represented explicitly as teacher vectors}.
+They are only defined to then define the child vectors in turn.
+
+To center the children around the parent vector, we organize them on a regular simplex.
+Then,
+\begin{align*}
+    \sum_b v_{ab} &= 0,
+    \qquad
+    v_{ab}^\top v_{ad} = -\frac{1}{q-1} \quad (b \neq d) \\
+    \implies
+    \frac{1}{q} \sum_b e_{ab} &= cp_a
+\end{align*}
+Then the sibling overlap is
+\begin{align*}
+    r \equiv
+    e_{ab}^\top e_{ad}
+    &= c^2 - (1-c^2) \frac{1}{q-1}
+    = \frac{qc^2-1}{q-1}
+\end{align*}
+We impose $r > s$, since siblings should all be closer to each other than to other siblings.
+
+The Gram matrix takes the following form:
+\begin{align*}
+    G
+    &= (1-r)I_{mq} + (r-s)(I_m \otimes J_q) + sJ_{mq}
+\end{align*}
+where $J_k$ is the all-ones matrix.
+Maybe more clearly, we can write
+\begin{align*}
+    G_{ab,cd}
+    = \begin{cases}
+    1, \quad a=c, b=d\\
+    r, \quad a=c, b\neq d\\
+    s, \quad a\neq c
+    \end{cases}
+\end{align*}
+We're going to find the eigenvalues of $G$, which will turn out show nice, symmetric structural relationships.
+
+Let $x = (x_{ab})$ be an arbitrary coefficient vector, and define its coefficient sum within parent group $a$, and its total sum:
+\begin{align*}
+    S_a
+    = \sum_{b=1}^q x_{ab},
+    \qquad S = \sum_{a=1}^m S_a
+\end{align*}
+Then,
+\begin{align*}
+    (Gx)_{ab}
+    &= x_{ab} + r \sum_{d\neq b} x_{ad} + s \sum_{c\neq a} \sum_{d} x_{cd} \\
+    &= x_{ab} + r(S_a - x_{ab}) + s(S - S_a) \\
+    &= (1-r)x_{ab} + (r-s) S_a + sS
+\end{align*}
+We can now probe different sectors by setting $x$ to various values.
+
+To look at the shared mode, set every $x_{ab}=1$.
+Then $S_a = q$ and $S=mq$, so
+\begin{align*}
+    (Gx)_{ab} &= (1-r) + q(r-s) + mqs\\
+    &= 1 + (q-1)r + q(m-1)s
+\end{align*}
+Since this is the same value for each component of $Gx$, this is an eigenvalue:
+\begin{align*}
+    \boxed{\Lambda_0 = 1 + (q-1)r + q(m-1)s}
+\end{align*}
+Notice that $\Lambda_0$ is also the row sum: each leaf has overlap 1 with itself, $r$ with its $q-1$ siblings, and $s$ with the $q(m-1)$ leaves in other branches.
+
+To consider contrasts between parents, take the coefficients constant within each group:
+\begin{align*}
+    x_{ab} = z_a,
+    \qquad \sum_{a=1}^m z_a = 0
+\end{align*}
+which yields $S_a = qz_a$ and $S = 0$.
+Then,
+\begin{align*}
+    (Gx)_{ab}
+    &= (1-r)z_a + (r-s)qz_a \\
+    &= [1 + (q-1)r - qs]z_a
+\end{align*}
+Thus, every such vector is an eigenvector, with eigenvalue
+\begin{align*}
+    \boxed{\Lambda_P = 1 + (q-1)r -qs}
+\end{align*}
+There are $m$ coefficients $z_a$, subject only to the constraint that they sum to 0.
+Thus, this eigenspace has dimension $m-1$.
+For example, with two parents, each with three children, this sector is spanned by the vector $(1, 1, 1, -1, -1, -1)$.
+
+Finally, for contrasts within parents, require the coefficients of each group to sum to 0:
+\begin{align*}
+    S_a = \sum_b x_{ab} = 0
+\end{align*}
+Then $S = 0$ as well, and the matrix action reduces to
+\begin{align*}
+    (Gx)_{ab} = (1-r)x_{ab}
+\end{align*}
+Thus, the last eigenvalue is
+\begin{align*}
+    \boxed{\Lambda_C = 1-r}
+\end{align*}
+Within each group, there are $q$ coefficients subject to one constraint, giving $q-1$ dimensions per group.
+So the total dimension is $m(q-1)$.
+Again in the two parent, three child case, one vector would be $(1, -1, 0, 0, 0, 0)$, which distinguishes two children of the first parent.
+
+Since the dimensions add to $mq = 1 + (m-1) + m(q-1)$, this must be all of the eigenspaces.
+
+This also suggests the decomposition of a vector into pieces for the different eigenspaces:
+\begin{align*}
+    x_{ab} = \underbrace{\bar{x}}_{\text{shared}} 
+    + \underbrace{(\bar{x}_a - \bar{x})}_\text{between parents}
+    + \underbrace{(x_{ab} - \bar{x}_a)}_\text{within parents}
+\end{align*}
+where
+\begin{align*}
+    \bar{x} = \frac{1}{mq} \sum_{a,b} x_{ab},
+    \qquad
+    \bar{x}_a = \frac{1}{q} \sum_b x_{ab}
+\end{align*}
+
+Now, notice that the magnitudes of the eigenvalues suggest a hierarchy:
+\begin{align*}
+    \Lambda_0 - \Lambda_P = mqs > 0,&
+    \qquad
+    \Lambda_P - \Lambda_C = q(r-s) > 0, \\
+    \implies
+    &\boxed{\Lambda_0 > \Lambda_P > \Lambda_C}
+\end{align*}
+These eigenvalues control the stability of the shared committee.
+Write
+\begin{align*}
+    H(u) = \sum_{a,b} (e_{ab}^\top u)^3,
+    \qquad u_0 = \frac{1}{\sqrt{mq\Lambda_0}},
+    \qquad c_0 = \sqrt{\frac{\Lambda_0}{mq}}
+\end{align*}
+Every teacher direction has overlap $c_0$ with $u_0$, and so
+\begin{align*}
+    H(u_0) = c_0 \Lambda_0
+\end{align*}
+Since this Gram matrix has constant row sum, we can apply that result to see the stability of tangent directions to the $\Lambda_0$ eigenspace:
+\begin{align*}
+    \left. \frac{d^2}{d\varepsilon^2} H(u_0 \cos\varepsilon + v\sin\varepsilon) \right|_{\varepsilon=0}
+    = 3c_0(2\Lambda - \Lambda_0)
+\end{align*}
+Since $\Lambda_P > \Lambda_C$, the strongest local tendency away from the shared direction distinguishes the parent branches.
+
+
 \appendix
 \section{Generalized Spherical Harmonics}
 \label{app:generalized-spherical-harmonics}
