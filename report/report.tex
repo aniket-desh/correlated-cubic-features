@@ -1,0 +1,141 @@
+% SPAR Report: Correlated Cubic Features
+% Built from the SPAR report template:
+%   https://github.com/the-kairos-project/spar-report-template
+% Compatible with arXiv (TeX Live 2023+, pdflatex)
+%
+% To compile: latexmk -pdf report.tex
+
+% ============================================================================
+% DOCUMENT CLASS
+% ============================================================================
+% Options: midterm | final | arxiv
+\documentclass[midterm]{sparreport}
+
+% ============================================================================
+% PROJECT PACKAGES AND NOTATION (matching main.tex)
+% ============================================================================
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{subcaption}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{^\top}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\inner}[2]{\left\langle #1,#2 \right\rangle}
+
+% ============================================================================
+% METADATA
+% ============================================================================
+\title{Correlated Cubic Features}
+
+\author{
+  \textbf{Jeremy Atkins}\\
+  \texttt{jeremy\_atkins@brown.edu}\\
+  Brown University
+  % Add co-authors and mentor(s) with \and:
+  % \and
+  % \textbf{Aniket ...}\\
+  % \texttt{...}
+  % \and
+  % \textbf{Mentor Name}\\
+  % \texttt{mentor@example.org}
+}
+
+\sparround{Fall 2026}
+
+% ============================================================================
+% DOCUMENT BEGINS
+% ============================================================================
+\begin{document}
+
+\maketitle
+
+% ============================================================================
+% ABSTRACT (100-200 words)
+% ============================================================================
+% Overview of the research question, why it matters, approach, and findings.
+% Keep it accessible to readers outside the subfield. No footnotes or citations.
+\begin{abstract}
+We extend Nisch's two-feature calculation to $k$ correlated cubic target
+features at Bayesian equilibrium. We ask when a single committee of neurons
+serves all the features, when it splits, and which populations of neurons
+minimize the posterior cost after splitting.
+% TODO: expand to 100-200 words; state why this matters for AI safety and
+% summarize the main results.
+\end{abstract}
+
+\keywords{feature learning \and Bayesian neural networks \and superposition \and statistical mechanics}
+
+% ============================================================================
+% INTRODUCTION (100-350 words)
+% ============================================================================
+% The problem, why it matters, the gap it fills, and what success looks like.
+\section{Introduction}
+
+% TODO
+
+% ============================================================================
+% METHODOLOGY (200-500 words)
+% ============================================================================
+% For theoretical work: framework, key assumptions, and approach to proofs.
+% Source material: main.tex, Setup through "Reduced description in terms of
+% committees".
+\section{Methodology}
+
+% \subsection{Teacher, student, and equilibrium ensemble}
+% \subsection{Reduced description in terms of committees}
+
+% ============================================================================
+% PRELIMINARY RESULTS (200-500 words)
+% ============================================================================
+% Key insights and partial results.
+% Source material: main.tex ("Three Correlated Features", "k Features",
+% "Local Stability with Constant Row Sums", "Exact Splitting of Orthogonal
+% Feature Groups"), isosceles_setup.tex, orthogonal_extension.tex.
+\section{Preliminary Results}
+
+% \subsection{Critical correlation for $k$ symmetric features}
+% \subsection{Stability of the shared direction}
+% \subsection{Exact splitting of orthogonal feature groups}
+
+% ============================================================================
+% CHALLENGES & OPEN QUESTIONS (100-300 words, optional but encouraged)
+% ============================================================================
+\section{Challenges \& Open Questions}
+
+% TODO
+
+% ============================================================================
+% NEXT STEPS (150-400 words)
+% ============================================================================
+\section{Next Steps}
+
+% TODO
+
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
+% For arXiv submission, include the generated .bbl file.
+% Uncomment once references.bib has entries and the text cites them
+% (bibtex errors out on a document with no citations).
+% \bibliographystyle{plain}
+% \bibliography{references}
+
+\end{document}
