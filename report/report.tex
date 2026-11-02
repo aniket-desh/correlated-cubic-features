@@ -240,6 +240,65 @@ The Gram matrix has three eigenspaces: a shared mode, contrasts between parents 
 The magnitudes of the eigenvalues suggest a hierarchy, $\Lambda_0 > \Lambda_P > \Lambda_C$.
 Since $\Lambda_0$ is also the row sum, the constant-row-sum result applies, and a tangent eigenmode with eigenvalue $\Lambda$ has curvature $3c_0(2\Lambda - \Lambda_0)$, with $c_0 = \sqrt{\Lambda_0/mq}$.
 Since $\Lambda_P > \Lambda_C$, the strongest local tendency away from the shared direction distinguishes the parent branches.
+Once the shared committee is occupied, with strength $b = \beta c_0\Lambda_0 - \lambda$, splitting it into two committees along a parent contrast lowers the free energy for
+\begin{align*}
+    \frac{\beta}{\lambda} > \frac{1}{2c_0\Lambda_P}.
+\end{align*}
+This is only a local result, however.
+For $m > 2$, a parent direction at a \emph{finite} angle from the shared direction becomes favorable before this local instability is reached, and the new parent committees grow while the shared committee remains occupied.
+
+\paragraph{Committee sizes.}
+The strength of a committee is proportional to its number of neurons, $b_j \propto n_j/\sqrt{K}$, with an $O(1)$ constant.
+Since $K = d^2/\Delta$,
+\begin{align*}
+    n_j \propto \frac{d}{\sqrt{\Delta}}\, b_j.
+\end{align*}
+When the number of features does not grow with $d$, none of the equations determining the optimal strengths $b_j$ depend on $d$.
+Thus every occupied committee with positive strength contains $\Theta(d)$ neurons.
+This holds in every phase, and does not depend on knowing which committees are occupied: the optimal population cannot have higher free energy than the empty one, so
+\begin{align*}
+    \lambda\sum_j b_j \leq F(\varnothing) = \frac{1}{2}\E_x f_*^2 = O(1).
+\end{align*}
+The total number of aligned neurons is therefore $O(d)$, an $O(1/d)$ fraction of the network.
+Note that the population is \emph{not} conserved as the signal grows.
+At a continuous, symmetric split, a committee divides its neurons equally among its children, but the total strength changes between splits, so there is no universal division of neurons by level in the tree.
+
+\paragraph{Phase diagram.}
+By symmetry, there are three natural families of committees: a single shared committee (S), $m$ parent committees (P), and $mq$ child committees (C).
+A population is globally optimal exactly when
+\begin{align*}
+    \beta\,\E_x\!\left[(f_* - f_\comm)\,\psi_3(u^\top x)\right] \leq \lambda
+    \quad \text{for every unit } u,
+\end{align*}
+with equality on the occupied directions, since the free energy is convex in the distribution of committee strengths.
+Phase boundaries occur when an unoccupied direction reaches this bound, when an occupied committee's strength reaches zero, or when occupied directions merge.
+The resulting phase structure is surprisingly complex.
+For $m=3$, $q=9$, $r=0.3$, and $s=0.24$, increasing $\eta = \beta/\lambda$ gives the sequence
+\begin{align*}
+    \varnothing
+    \to \mathrm{S}
+    \to \mathrm{SP}
+    \to \mathrm{P}
+    \to \mathrm{PC}
+    \to \mathrm{SPC}
+    \to \mathrm{SC}
+    \to \mathrm{C}.
+\end{align*}
+Adjacent levels of the hierarchy can coexist, all three levels can be occupied at once, and the shared committee can disappear and later return as the child committees grow.
+Occupancy is determined by the fit to the whole target, so it need not move irreversibly down the tree.
+Figure~\ref{fig:hierarchy-phases} shows the phase diagram as $s$ varies; every plotted point passes the global optimality check above.
+We have not yet proven that these three families are always sufficient, so the eight occupancy patterns are a well-supported, but not yet complete, classification.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/hierarchy_phase_diagram.png}
+    \caption{Phases of the two-level hierarchy with $m=3$ parents, $q=9$ children per parent, and sibling overlap $r=0.3$, as a function of the cross-parent overlap $s$ and signal strength $\eta=\beta/\lambda$.
+    Labels list the occupied committee families: shared (S), parent (P), and child (C).
+    (a) A broad slice. (b) The region where all three levels coexist.
+    The dashed line is $s=0.24$.
+    Boundaries have grid resolution.}
+    \label{fig:hierarchy-phases}
+\end{figure}
 
 % ============================================================================
 % CHALLENGES & OPEN QUESTIONS (100-300 words, optional but encouraged)
