@@ -160,9 +160,86 @@ The training process will tend to minimize the free energy.
 % Feature Groups"), isosceles_setup.tex, orthogonal_extension.tex.
 \section{Preliminary Results}
 
-% \subsection{Critical correlation for $k$ symmetric features}
-% \subsection{Stability of the shared direction}
-% \subsection{Exact splitting of orthogonal feature groups}
+Adding a single committee with output $b\psi_3(u^\top x)$ to a completely unaligned network changes the free energy by
+\begin{align*}
+    \Delta F
+    = b\left[\lambda - \beta H(u)\right] + \frac{b^2}{2},
+    \qquad
+    H(u) = \sum_{i=1}^k (e_i^\top u)^3,
+    \qquad |u| = 1.
+\end{align*}
+For $0 < b \ll 1$, the direction first recruited is therefore the one maximizing $H(u)$.
+Writing $r_i = e_i^\top u$ for the overlaps and $G_{ij} = e_i^\top e_j$ for the Gram matrix, the stationarity condition is
+\begin{align*}
+    \boxed{G r^{\circ 2} = H(u) r}
+\end{align*}
+where $r^{\circ 2}$ is the elementwise square.
+This is very similar to an eigenvalue equation, except that $G$ acts on $r$ \emph{quadratically}, rather than linearly.
+
+\subsection{Critical correlation for $k$ symmetric features}
+
+Now say we're in the symmetric case, $G_{ij} = (1-\omega)\delta_{ij} + \omega$, with $k \geq 2$ and $0 < \omega < 1$.
+The stationarity condition then forces the components of $r$ to take only two distinct values, $x$ and $y$.
+If $x > y$, any configuration containing two or more copies of $x$ has a tangent direction with positive curvature.
+Hence, every global maximizer is one of two forms:
+\begin{align*}
+    r = (x, x, \dots, x)
+    \quad \text{or} \quad
+    r = (x, y, \dots, y),
+    \qquad x > y
+\end{align*}
+The first case is the fully-shared, symmetric solution, and the second is the specialized, symmetry-broken solution.
+Comparing the two values of $H$ with $R = x/y$, we find
+\begin{align*}
+    \left(\frac{H_\text{asym}}{H_\text{sym}}\right)^2
+    =\frac{k(R^2+k-1)^3}{(R+k-1)^3(R^3+k-1)},
+\end{align*}
+which crosses one at $R_c = (k-1)^{2/3}$.
+Substituting into the stationarity equation $\omega = R/(R^2+R+k-1)$ gives the critical correlation
+\begin{align*}
+    \boxed{\omega_c(k) = \frac{1}{1+(k-1)^{1/3}+(k-1)^{2/3}}.}
+\end{align*}
+For $0<\omega<\omega_c(k)$, one of the $k$ equivalent asymmetric directions is favored; for $\omega>\omega_c(k)$, the shared direction is favored.
+For $k>2$ the maximizing direction changes discontinuously, while for $k=2$ the asymmetric branch merges into the shared direction continuously at $\omega_c(2)=1/3$.
+For large $k$, the critical correlation scales as $\omega_c(k)\sim k^{-2/3}$.
+
+\subsection{Stability of the shared direction}
+
+The shared direction can remain stationary even when the pairwise correlations are not all equal.
+A useful condition is that every teacher has the same total overlap with the others, including itself: $G\mathbf 1 = s\mathbf 1$.
+Then the shared unit direction $u_0 = \sum_i e_i/\sqrt{ks}$ is stationary, and every teacher has the same overlap $c = \sqrt{s/k}$ with it.
+The curvature along a great-circle perturbation in a tangent direction $v$ is
+\begin{align*}
+    \left.\frac{d^2H(u_0\cos\varepsilon + v\sin\varepsilon)}{d\varepsilon^2}\right|_{\varepsilon=0}
+    =3c\left[2\sum_i(e_i^\top v)^2-s\right].
+\end{align*}
+The tangent eigenvalues of this quadratic form within the teacher span are exactly the positive eigenvalues of $G$ on $\mathbf 1^\perp$, so the shared direction is a strict local maximum when
+\begin{align*}
+    \boxed{2\lambda_{\max}\!\left(G\big|_{\mathbf 1^\perp}\right)<s.}
+\end{align*}
+For equal pairwise correlations this reduces to $\omega > 1/(k+1)$, which is smaller than the global transition $\omega_c(k)$: the shared direction can resist every sufficiently small tilt while a more distant asymmetric direction has higher $H$.
+
+\subsection{Hierarchy model}
+
+We want to start trying to understand how models represent hierarchies of features.
+The easiest version of this is the \emph{symmetric two-level tree} hierarchy: $m$ parent vectors $p_a$, each of which has $q$ children
+\begin{align*}
+    e_{ab} = c p_a + \sqrt{1-c^2} v_{ab},
+\end{align*}
+where the residuals $v_{ab}$ form a regular simplex around each parent.
+Note that \emph{the parent vectors are not represented explicitly as teacher vectors}.
+Siblings have overlap $r$, and children of different parents have overlap $s < r$.
+The Gram matrix has three eigenspaces: a shared mode, contrasts between parents (dimension $m-1$), and contrasts within parents (dimension $m(q-1)$), with eigenvalues
+\begin{align*}
+    \Lambda_0 = 1 + (q-1)r + q(m-1)s,
+    \qquad
+    \Lambda_P = 1 + (q-1)r - qs,
+    \qquad
+    \Lambda_C = 1 - r.
+\end{align*}
+The magnitudes of the eigenvalues suggest a hierarchy, $\Lambda_0 > \Lambda_P > \Lambda_C$.
+Since $\Lambda_0$ is also the row sum, the constant-row-sum result applies, and a tangent eigenmode with eigenvalue $\Lambda$ has curvature $3c_0(2\Lambda - \Lambda_0)$, with $c_0 = \sqrt{\Lambda_0/mq}$.
+Since $\Lambda_P > \Lambda_C$, the strongest local tendency away from the shared direction distinguishes the parent branches.
 
 % ============================================================================
 % CHALLENGES & OPEN QUESTIONS (100-300 words, optional but encouraged)
