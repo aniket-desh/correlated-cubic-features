@@ -39,6 +39,7 @@
 \newcommand{\argmin}{\operatorname*{arg\,min}}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
 \newcommand{\inner}[2]{\left\langle #1,#2 \right\rangle}
+\newcommand{\comm}{\mathcal{C}}
 
 % ============================================================================
 % METADATA
@@ -89,7 +90,17 @@ minimize the posterior cost after splitting.
 % The problem, why it matters, the gap it fills, and what success looks like.
 \section{Introduction}
 
-% TODO
+Neural networks can learn features either by aligning small numbers of highly correlated neurons (``committees''), or through small adjustments in many neurons.
+The former is a form of lottery ticket hypothesis: it is possible that features and tasks are largely learned by subnetworks that are small compared to the size of the whole language model.
+This would have strong implications for interpretability: namely, that we should be looking for some kind of ``core mechanism'' for a task, and that other neurons may only add minimal contribution.
+
+We apply methods from statistical mechanics to understand the neuron structure for a two-layer network with cubic Hermite polynomial nonlinearity.
+The Gaussian orthogonality of Hermite polynomials aid in solving the ground state of the system.
+Based on prior work from Mainali (unpublished), we begin from a formulation of the training dynamics of the network as a free energy minimization, and then solve for the minima for cases with various kinds of symmetry.
+Our primary aim is to understand how the network might perform on realistic datasets, which display multiple levels of organization.
+Thus, we study the case of a teacher network which represents explicitly a lower level of organization, with the higher level represented implicitly by correlations in teacher features.
+We show that the phase structure of representations learned by the student network is surprisingly complex.
+We discuss implications of this result for interpretability.
 
 % ============================================================================
 % METHODOLOGY (200-500 words)
@@ -99,8 +110,46 @@ minimize the posterior cost after splitting.
 % committees".
 \section{Methodology}
 
-% \subsection{Teacher, student, and equilibrium ensemble}
-% \subsection{Reduced description in terms of committees}
+Let $d$ be the input dimension, $K$ be the number of hidden neurons, and $P$ be the number of training examples.
+
+Take
+\begin{equation}
+    K = \frac{d^2}{\Delta},\quad P = \chi K,
+\end{equation}
+with $\Delta, \chi > 0$ fixed.
+The teacher model is defined as
+\begin{align*}
+    f_*(x) = \beta \sum_{j=1}^k \psi_3(e_j^\top x)
+\end{align*}
+where $\psi_3$ is the cubic Hermite polynomial and $\beta \geq 0$ is the output strength.
+The student network is then
+\begin{align*}
+    f(x) = \frac{1}{\sqrt{d}} \sum_{i=1}^{K} a_i \psi_3(w_i^\top x)
+\end{align*}
+where the $a_i$ are the readout strength with $|a_i| \leq A$ and $N^{-1} \sum_i a_i^2 = \tau^2$, such that the readouts are fixed on the sphere $S^{K-1}$.
+$w_i$ are the hidden weights for each neuron.
+
+Let the posterior over readouts and hidden weights be
+\begin{align*}
+    \Pi(a, W \,|\, X, y)
+    \propto \Pi_0(a, W) \,\exp\left[ - \frac{|y - f_{a, W}(X)|^2|}{2\kappa^2} \right]
+\end{align*}
+We can show that, for $\comm = \{n, a, r, u\}$ a proposed collection of $n$ neurons such that each weight can be written $w = ru + \sqrt{1-r^2}w_\perp$ and each have output strength $a$, the posterior for that group is
+\begin{align*}
+    \Pi(\comm \,|\, X, y)
+    \propto \Pi_0(\comm) \, \exp\left[ -d \sum_j n_j J(r_j) -\frac{dg}{2} \E_x (f_* - f_\comm)^2 \right]
+\end{align*}
+where $g = \alpha/v$, and $v$ is the total variance per sample, and $J(r) = -1/2 \log(1-r^2)$.
+
+Various manipulations can then be done to show that this can be written
+\begin{align*}
+    \Pi(\{b_j, u_j\} \,|\, X, y)
+    \propto e^{-Ng(F - \min F)} \\
+    \boxed{F = \lambda \sum_j b_j + \frac{1}{2} \E_x (f_* - f_\comm)^2}
+\end{align*}
+where the boxed expression is the \emph{free energy}.
+$\lambda$ is an $O(1)$ positive constant derived from other values, and the $b_j = O(n d^{-1/2})$ are strengths.
+The training process will tend to minimize the free energy.
 
 % ============================================================================
 % PRELIMINARY RESULTS (200-500 words)
